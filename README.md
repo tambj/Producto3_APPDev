@@ -1,18 +1,18 @@
-### Instalar EXPO
+### 1. Instalar EXPO
 
-expo 
+npm install -g expo-cli
 
 
-### Empezar proyecto
+###  2. Empezar proyecto
 
 expo init nombre-proyecto
 
 
-### Empezamos/lanzamos el proyecto 
+### 3. Empezamos/lanzamos el proyecto 
 npm start
 
 
-### Ver proyecto en el navegador
+### 4. Ver proyecto en el navegador
 
  expo start --web dd
 
