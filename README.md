@@ -14,6 +14,6 @@ npm start
 
 ### Ver proyecto en el navegador
 
- expo start --web 
+ expo start --web dd
 
 instalará la dependencia react-native-web y podremos ver el proyecto en el navegador 
