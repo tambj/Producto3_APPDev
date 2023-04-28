@@ -1,48 +1,54 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, Image, FlatList, StyleSheet, ImageBackground} from 'react-native';
-import {db} from '../config/database';
+import React, { Component } from 'react';
+import { View, Text, Image, FlatList, StyleSheet, ImageBackground } from 'react-native';
+import { db } from '../config/database';
 import headerImage from '../../assets/nesflis.png';
 import backgroundImage from '../../assets/background.jpg';
+import { TouchableOpacity } from 'react-native';
 
-const Inicio = () => {
-  const [actors, setActors] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const querySnapshot = await db.collection('actors').get();
-      const actorsList = querySnapshot.docs.map(documentSnapshot => ({
-        ...documentSnapshot.data(),
-        key: documentSnapshot.id,
-      }));
-      setActors(actorsList);
+class Inicio extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      actors: [],
     };
-    fetchData();
-  }, []);
+  }
 
-  const renderItem = ({item}) => (
-    <View style={styles.itemContainer}>
-      <Text style={styles.itemText}>{item.nombre}</Text>
-    </View>
+  async componentDidMount() {
+    // Obtener actores
+    const querySnapshot = await db.collection('actors').get();
+    const actorsList = querySnapshot.docs.map(documentSnapshot => ({
+      ...documentSnapshot.data(),
+      key: documentSnapshot.id,
+    }));
+    this.setState({ actors: actorsList });
+  }
+
+  renderItem = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => this.props.navigation.navigate('Details', { actor: item })}
+    >
+      <View style={styles.itemContainer}>
+        <Text style={styles.itemText}>{item.nombre}</Text>
+      </View>
+    </TouchableOpacity>
   );
 
-  return (
-    <ImageBackground source={backgroundImage} style={styles.container}>
-      <View style={styles.header}>
-        <Image
-          style={styles.headerImage}
-          source={headerImage}
-        />
-      </View>
-      <View style={styles.card}>
-        <FlatList
-          data={actors}
-          renderItem={renderItem}
-          keyExtractor={item => item.key}
-        />
-      </View>
-    </ImageBackground>
-  );
-};
+  render() {
+    return (
+      <ImageBackground source={backgroundImage} style={styles.container}>
+        
+        <View style={styles.card}>
+          <Text style={styles.avatarText}>AVATAR</Text>
+          <FlatList
+            data={this.state.actors}
+            renderItem={this.renderItem}
+            keyExtractor={item => item.key}
+          />
+        </View>
+      </ImageBackground>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -63,7 +69,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: 'rgba(245, 245, 245, 0.6)',
     shadowColor: '#000',
-    shadowOffset: {width: 0, height: 10},
+    shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.8,
     shadowRadius: 20,
     elevation: 5,
@@ -75,6 +81,14 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 16,
+    fontWeight: 'bold',
+  },
+  avatarText: {
+    marginTop: 25,
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
   },
 });
 
