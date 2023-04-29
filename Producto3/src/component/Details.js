@@ -1,10 +1,22 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, ImageBackground, TouchableOpacity, Dimensions } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import backgroundImage from '../../assets/background.jpg';
+import { useState } from 'react';
+//Libreria para hacer zoom 
+import ImageZoom from 'react-native-image-pan-zoom';
 
 const Details = ({ route, navigation }) => {
   const { actor } = route.params;
+
+  const imageHeight = 150;
+
+  // Hacer zoom en foto
+  const [isZoomed, setIsZoomed] = useState(false); 
+
+  const handleImagePress = () => {
+    setIsZoomed(!isZoomed);
+  };
 
   const handleBackButtonPress = () => {
     navigation.goBack();
@@ -14,10 +26,24 @@ const Details = ({ route, navigation }) => {
     navigation.navigate('Player', { videoUrl: actor.video });
   };
 
+
+
   return (
     <ImageBackground source={backgroundImage} style={styles.container}>
       <Text style={styles.name}>{actor.nombre}</Text>
-      <Image style={styles.image} source={{ uri: actor.foto }} />
+      <TouchableOpacity onPress={handleImagePress}>
+      <ImageZoom
+          cropWidth={Dimensions.get('window').width}
+          cropHeight={Dimensions.get('window').height}
+          imageWidth={150}
+          imageHeight={150}
+          minScale={1}
+          maxScale={3}>      
+          <View style={{ height: imageHeight }}>
+          <Image style={[styles.image, isZoomed && styles.zoomed]} source={{ uri: actor.foto }} />
+          </View>
+        </ImageZoom>
+      </TouchableOpacity>
       <View style={styles.card}>
         <Text style={styles.infoText}><Text style={{ fontWeight: 'bold' }}>Edad:</Text> {actor.edad}</Text>
         <Text style={styles.infoText}><Text style={{ fontWeight: 'bold' }}>Género:</Text> {actor.genero}</Text>
@@ -76,6 +102,23 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 20,
     marginTop: 20,
+  },
+  zoomed: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    resizeMode: 'contain',
+    position: 'absolute',
+  },
+  zoomButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    borderRadius: 30,
+    padding: 10,
+  },
+  zoomIcon: {
+    color: '#ac1313',
   },
 });
 

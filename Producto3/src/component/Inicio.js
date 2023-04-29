@@ -5,6 +5,7 @@ import { db } from '../config/database';
 import backgroundImage from '../../assets/background.jpg';
 import { TouchableOpacity } from 'react-native';
 
+
 class Inicio extends Component {
   constructor(props) {
     super(props);
