@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, Image, FlatList, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, FlatList, StyleSheet, ImageBackground } from 'react-native';
 import { db } from '../config/database';
-import headerImage from '../../assets/nesflis.png';
+// import headerImage from '../../assets/nesflis.png';
 import backgroundImage from '../../assets/background.jpg';
 import { TouchableOpacity } from 'react-native';
 
