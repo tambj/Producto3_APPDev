@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   video: {
-    
     width: '100%',
   },
   buttonContainer: {
