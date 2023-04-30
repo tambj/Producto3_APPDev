@@ -1,10 +1,11 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, ImageBackground, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import backgroundImage from '../../assets/background.jpg';
 
 const Details = ({ route, navigation }) => {
   const { actor } = route.params;
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const handleBackButtonPress = () => {
     navigation.goBack();
@@ -14,10 +15,26 @@ const Details = ({ route, navigation }) => {
     navigation.navigate('Player', { videoUrl: actor.video });
   };
 
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
   return (
     <ImageBackground source={backgroundImage} style={styles.container}>
       <Text style={styles.name}>{actor.nombre}</Text>
-      <Image style={styles.image} source={{ uri: actor.foto }} />
+      <TouchableOpacity onPress={toggleModal}>
+        <Image style={styles.image} source={{ uri: actor.foto }} />
+      </TouchableOpacity>
+      <Modal animationType="slide" transparent visible={isModalVisible} onRequestClose={toggleModal}>
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Image style={styles.modalImage} source={{ uri: actor.foto }} />
+          </View>
+          <TouchableOpacity style={styles.closeModalButton} onPress={toggleModal}>
+            <FontAwesome name="times" size={30} color="white" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
       <View style={styles.card}>
         <Text style={styles.infoText}><Text style={{ fontWeight: 'bold' }}>Edad:</Text> {actor.edad}</Text>
         <Text style={styles.infoText}><Text style={{ fontWeight: 'bold' }}>Género:</Text> {actor.genero}</Text>
@@ -77,6 +94,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginTop: 20,
   },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    width: '90%',
+    height: '80%',
+    borderRadius: 10,
+  },
+  modalImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  closeModalButton: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+  },
+
 });
 
 export default Details;
