@@ -1,0 +1,11 @@
+**** Instrucciones para iniciar el proyecto en Codesandbox****
+
+1.- cd Producto3    //Entramos en directorio de Proyecto.
+
+2.- npm install     //Instalamos dependencias.
+
+3.- npx expo install @expo/webpack-config@^18.0.1      //Instalar complemento web para expo.
+
+4.- npx expo start  //Comando para iniciar Proyecto.
+
+5.- W               //Pulsamos para ver en Web.
